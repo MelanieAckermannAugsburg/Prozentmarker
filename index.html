@@ -1,0 +1,342 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prozent-Marker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1F5;--surface:#FFFFFF;--ink:#1B2236;--soft:#5B6580;--line:#D3DAE5;--muted:#F5F7FA;
+  --gw:#1F6FD6;--gw-hl:#B4D6FF;--pw:#C76A00;--pw-hl:#FFD596;--ps:#1E8A3B;--ps-hl:#BDEBA8;
+  --bad:#C62D45;--good:#1E8A3B;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",Verdana,"Segoe UI",system-ui,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121827;--surface:#1A2237;--ink:#E8ECF6;--soft:#A3ADC6;--line:#334060;--muted:#222B44;
+  --gw:#71B0FF;--gw-hl:rgba(47,130,255,.48);--pw:#FFB24F;--pw-hl:rgba(230,130,0,.5);--ps:#72D98C;--ps-hl:rgba(46,170,80,.5);
+  --bad:#FF6F85;--good:#72D98C}}
+:root[data-theme="dark"]{
+  --bg:#121827;--surface:#1A2237;--ink:#E8ECF6;--soft:#A3ADC6;--line:#334060;--muted:#222B44;
+  --gw:#71B0FF;--gw-hl:rgba(47,130,255,.48);--pw:#FFB24F;--pw-hl:rgba(230,130,0,.5);--ps:#72D98C;--ps-hl:rgba(46,170,80,.5);
+  --bad:#FF6F85;--good:#72D98C}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.2rem;line-height:1.5;min-height:100vh}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gw);outline-offset:3px;border-radius:6px}
+.wrap{max-width:620px;margin:0 auto;padding:16px 16px 60px}
+h1,h2{font-family:var(--display);font-weight:800;letter-spacing:-.015em;line-height:1.15;margin:0}
+
+.mk{padding:0 .14em;border-radius:.2em .45em .3em .4em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.mk-GW{background:var(--gw-hl)}.mk-PW{background:var(--pw-hl)}.mk-PS{background:var(--ps-hl)}
+.sweep{animation:sweep .4s ease-out both}
+@keyframes sweep{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* home */
+.title{font-size:clamp(2.1rem,8vw,3rem);margin:16px 0 6px}
+.sub{color:var(--soft);margin:0 0 22px;max-width:40ch}
+.levels{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lv{width:100%;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px}
+.lv:hover{border-color:var(--ink)}
+.lv-n{font-family:var(--display);font-weight:800;font-size:1.3rem;width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center}
+.lv strong{font-family:var(--display);font-size:1.25rem;display:block;line-height:1.2}
+.lv small{color:var(--soft);font-size:.95rem}
+.lv .ok{color:var(--good);font-weight:700;font-size:.95rem}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 0;color:var(--soft);font-size:1rem}
+
+/* play */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.tbtn{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:6px 12px;font-size:1rem;font-weight:700}
+.tbtn[aria-expanded="true"]{border-color:var(--ink)}
+.tools{display:flex;gap:8px}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 8px}
+.meta .lvname{font-family:var(--display);font-weight:800;font-size:1.05rem}
+.meta .count{color:var(--soft);font-size:1rem}
+.track{height:5px;background:var(--line);border-radius:5px;margin-bottom:16px;overflow:hidden}
+.track div{height:100%;background:var(--ink);transition:width .3s}
+.prompt{font-family:var(--display);font-weight:800;font-size:clamp(1.35rem,5.2vw,1.7rem);line-height:1.3;margin:0 0 14px}
+.help{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.help p{margin:0 0 6px;font-weight:700}
+.ladder{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.ladder li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+.ladder .n{font-family:var(--display);font-weight:800;width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-size:.9rem;margin-top:2px}
+
+/* artifacts */
+.art{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 1px 0 var(--line)}
+.art-k{font-size:.9rem;color:var(--soft);font-weight:700;margin-bottom:2px}
+.art-t{font-family:var(--display);font-weight:800;font-size:1.35rem;margin-bottom:10px}
+.row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:6px 0}
+.row.sb{justify-content:space-between}
+.row .lab{color:var(--soft)}
+.prog{height:12px;background:var(--muted);border-radius:6px;overflow:hidden;margin:10px 0 4px;border:1px solid var(--line)}
+.prog div{height:100%;background:var(--ink);opacity:.75}
+.price-old{text-decoration:line-through;color:var(--soft)}
+.badge{display:inline-block;background:var(--ink);color:var(--surface);font-weight:700;border-radius:8px;padding:0 8px}
+.sheet{background:var(--surface);border-left:6px solid var(--line)}
+.bigval{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1.1}
+.val{border:0;border-bottom:2.5px dashed var(--soft);background:transparent;padding:0 .12em;font-weight:700;border-radius:4px 4px 0 0;line-height:1.35}
+.badge .val{color:var(--surface);border-bottom-color:var(--surface)}
+.val:hover:not(.mk){background:var(--muted)}
+.val.mk{border-bottom-color:transparent;color:var(--ink)}
+.badge .val.mk{color:var(--ink)}
+.val.wrong{animation:shake .35s;border-bottom-color:var(--bad)}
+.val.reveal{outline:3px solid var(--ink);outline-offset:3px}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.text{font-size:clamp(1.3rem,5vw,1.55rem);line-height:2}
+
+/* kontext, hilfe, beispiel */
+.ctx{font-size:1.2rem;margin:0 0 12px;padding:10px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:12px}
+.ctx b{font-family:var(--display)}
+.task-q{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,5vw,1.6rem);line-height:1.3;margin:16px 0 8px}
+.hintbox{margin:0 0 4px;color:var(--soft);font-size:1.1rem}
+.val:disabled{opacity:.4;border-bottom-color:transparent;cursor:default}
+.demo-k{font-size:.95rem;font-weight:700;color:var(--soft);margin:0 0 4px}
+.dsteps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.dsteps li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;animation:fadein .3s ease-out both}
+.dsteps .n{font-family:var(--display);font-weight:800;width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-size:.9rem}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.intro{font-size:1.25rem}
+.lite .xr{display:none}
+.now{margin-top:14px;font-family:var(--display);font-weight:800;font-size:clamp(1.35rem,5.2vw,1.65rem);line-height:1.3;background:var(--surface);border:1.5px solid var(--line);border-left:6px solid var(--ink);border-radius:12px;padding:14px 16px;animation:fadein .3s ease-out both}
+.intro p{margin:0 0 12px}
+/* info */
+.lines p{margin:0 0 10px}
+.lines p:last-child{margin:0}
+
+/* streifen */
+.strf{margin:18px 0 6px;padding:0 2px}
+.strf-top{text-align:right;font-size:1rem;margin-bottom:4px}
+.strf-bar{position:relative;height:30px;border:2px solid var(--ink);border-radius:4px;background:var(--surface)}
+.strf-fill{height:100%;background:repeating-linear-gradient(135deg,var(--muted) 0 6px,var(--line) 6px 9px);border-right:2px solid var(--ink)}
+.strf-bot{position:relative;height:2.2em;font-size:1rem}
+.strf-bot span{position:absolute;top:6px;transform:translateX(-50%);white-space:nowrap}
+.strf-cap{font-size:1rem;color:var(--soft);margin:6px 0 0}
+
+.fb{margin-top:14px}
+.msg{border-radius:12px;padding:12px 14px;border:1.5px solid var(--line);border-left-width:6px;background:var(--surface)}
+.msg.good{border-left-color:var(--good)}.msg.bad{border-left-color:var(--bad)}
+.msg p{margin:0 0 6px}.msg p:last-child{margin:0}
+.next{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.primary{background:var(--ink);color:var(--bg);border:0;border-radius:12px;padding:13px 26px;font-weight:700}
+.ghost{background:var(--surface);border:1.5px solid var(--ink);border-radius:12px;padding:12px 22px;font-weight:700}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+(function(){
+const app=document.getElementById('app');
+const store={get(k,d){try{const v=localStorage.getItem('pm3_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('pm3_'+k,JSON.stringify(v))}catch(e){}}};
+const R={GW:{n:'Grundwert'},PW:{n:'Prozentwert'},PS:{n:'Prozentsatz'}};
+const ORDER=['PS','GW','PW'];
+const mk=(r,t,a)=>`<span class="mk mk-${r}${a?' sweep':''}">${t}</span>`;
+const canSpeak='speechSynthesis' in window;
+function speak(t){try{const s=t.replace(/<[^>]+>/g,' ').replace(/−/g,'minus ').replace(/%/g,' Prozent').replace(/€/g,' Euro').replace(/\bGB\b/g,'Gigabyte').replace(/\bGW\b/g,'G W').replace(/\bPW\b/g,'P W').replace(/\bPS\b/g,'P S').replace(/\s+/g,' ');
+  const u=new SpeechSynthesisUtterance(s);u.lang='de-DE';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+
+/* ---- Alltagsbeispiele ---- */
+const ART={
+ dl:{p:25,ctx:'Du lädst ein Spiel auf dein Handy.',vals:[['64 GB','GW','64 GB ist die ganze Größe des Spiels. Das sind 100 %.'],['16 GB','PW','16 GB sind schon geladen. Das ist ein Teil der 64 GB.'],['25 %','PS','25 % sagt, wie viel schon geladen ist.'],['noch 12 Min.','X']],
+  html:`<div class="art"><div class="art-k">Download läuft</div><div class="art-t">Racing Pro 3</div><div class="row">{1} von {0}</div><div class="prog"><div style="width:25%"></div></div><div class="row sb"><span>{2}</span><span class="xr">{3}</span></div></div>`},
+ shop:{p:25,ctx:'Sneaker im Onlineshop. Es gibt Rabatt.',vals:[['80,00 €','GW','80 € ist der volle Preis vor dem Rabatt. Das ist das Ganze, also 100 %.'],['−25 %','PS','−25 % heißt: 25 % Rabatt. Das ist der Prozentsatz.'],['20,00 €','PW','20 € sparst du. Das ist ein Teil vom vollen Preis.'],['Größe 42','X'],['2–3 Werktage','X']],
+  html:`<div class="art"><div class="art-k">Onlineshop</div><div class="art-t">Sneaker</div><div class="row"><span class="price-old">{0}</span><span class="badge">{1}</span></div><div class="row"><span class="lab">Du sparst</span>{2}</div><div class="row xr"><span class="lab">Größe</span>{3}</div></div>`},
+ test:{p:75,ctx:'Lea hat ihren Mathetest zurückbekommen.',vals:[['12.10.','X'],['18','PW','18 Punkte hat Lea. Das ist ein Teil von allen Punkten.'],['24','GW','24 Punkte sind alle Punkte, die man bekommen kann. Das ist das Ganze.'],['75 %','PS','75 % sagt, wie viel von allen Punkten Lea hat.'],['2','X']],
+  html:`<div class="art sheet"><div class="art-k">Mathematik · Leistungsnachweis</div><div class="art-t">Lea K.</div><div class="row"><span class="lab">Punkte:</span>{1} von {2}</div><div class="row"><span class="lab">Das sind:</span>{3}</div><div class="row xr"><span class="lab">Note:</span>{4}</div></div>`},
+ data:{p:75,ctx:'In der Handy-App siehst du dein Datenvolumen für diesen Monat.',vals:[['15 GB','PW','15 GB sind schon verbraucht. Das ist ein Teil vom Datenvolumen.'],['20 GB','GW','20 GB ist das ganze Datenvolumen im Monat. Das sind 100 %.'],['75 %','PS','75 % sagt, wie viel schon verbraucht ist.'],['31.10.','X']],
+  html:`<div class="art"><div class="art-k">Mein Handytarif</div><div class="art-t">Datenvolumen</div><div class="row">{0} von {1} verbraucht</div><div class="prog"><div style="width:75%"></div></div><div class="row sb"><span>{2}</span><span class="lab xr">gültig bis {3}</span></div></div>`},
+ cls:{p:40,ctx:'Die Klasse 9b hat eine Umfrage gemacht: Wie kommt ihr zur Schule?',vals:[['25 Schüler:innen','GW','25 Schüler:innen wurden befragt. Das ist die ganze Klasse.'],['10 Schüler:innen','PW','10 Schüler:innen fahren Bus. Das ist ein Teil der Klasse.'],['40 %','PS','40 % sagt, wie groß der Teil ist.'],['14.10.','X']],
+  html:`<div class="art"><div class="art-k">Umfrage Klasse 9b</div><div class="art-t">Wie kommst du zur Schule?</div><div class="row"><span class="lab">Befragt:</span>{0}</div><div class="row"><span class="lab">Mit dem Bus:</span>{1}</div><div class="row"><span class="lab">Das sind:</span>{2}</div><div class="row xr"><span class="lab">Datum:</span>{3}</div></div>`},
+ save:{p:15,ctx:'Tom macht eine Ausbildung. Er spart jeden Monat einen Teil von seinem Geld.',vals:[['1.000 €','GW','1.000 € ist die ganze Vergütung. Das sind 100 %.'],['15 %','PS','15 % sagt, wie viel davon gespart wird.'],['150 €','PW','150 € werden gespart. Das ist ein Teil der Vergütung.'],['1. September','X']],
+  html:`<div class="art"><div class="art-k">Banking-App · Sparplan</div><div class="art-t">Mein Sparplan</div><div class="row"><span class="lab">Vergütung:</span>{0}</div><div class="row"><span class="lab">Sparrate:</span>{1}</div><div class="row"><span class="lab">Gespart:</span>{2}</div><div class="row xr"><span class="lab">Start:</span>{3}</div></div>`},
+ bat:{ctx:'Du schaust in die Akku-Einstellungen von deinem Handy.',vals:[['40 %','PS','40 % ist der Prozentsatz. Er sagt, wie voll der Akku ist.'],['3 Std. 20 Min.','X'],['7:30 Uhr','X']],
+  html:`<div class="art"><div class="art-k">Einstellungen</div><div class="art-t">Akku</div><div class="bigval">{0}</div><div class="row xr"><span class="lab">Bildschirmzeit:</span>{1}</div><div class="row xr"><span class="lab">Geladen um:</span>{2}</div></div>`}
+};
+const TEXT=[
+ {p:50,s:'Im Kino gibt es [200 Plätze|GW]. [50 %|PS] sind besetzt. [Wie viele Plätze sind besetzt?|PW]'},
+ {p:75,s:'Ein Spiel ist [48 GB|GW] groß. [75 %|PS] sind schon geladen. [Wie viele GB sind schon da?|PW]'},
+ {p:25,s:'Eine Jacke kostet [80 €|GW]. Im Sale gibt es [25 %|PS] Rabatt. [Wie viel Euro sparst du?|PW]'},
+ {p:40,s:'In der Klasse sind [25 Schüler:innen|GW]. [10 davon|PW] kommen mit dem Bus. [Wie viel Prozent sind das?|PS]'},
+ {p:75,s:'Lea hat im Test [18 Punkte|PW] von [24 Punkten|GW]. [Wie viel Prozent sind das?|PS]'},
+ {p:15,s:'Tom spart [150 €|PW] im Monat. Das sind [15 %|PS] seiner Ausbildungsvergütung. [Wie hoch ist die Vergütung?|GW]'},
+ {p:25,s:'Am [Montag|X] fehlen [6 Schüler:innen|PW]. Das sind [25 %|PS] der Klasse. [Wie viele sind in der Klasse?|GW]'}
+];
+function parseText(t){const vals=[];let i=0;const html=t.s.replace(/\[([^\]|]+)\|(GW|PW|PS|X)\]/g,(m,a,r)=>{vals.push([a,r]);return `{${i++}}`});return {p:t.p,vals,html:`<div class="art"><div class="art-k">Textaufgabe</div><p class="text" style="margin:0">${html}</p></div>`}}
+
+const LADDER=`<ol class="ladder"><li><span class="n">1</span><span>Steht ein <b>%</b> dabei? Dann ist es der ${mk('PS','PS')}.</span></li><li><span class="n">2</span><span>Ist es <b>alles</b>, das Ganze? Dann ist es der ${mk('GW','GW')}.</span></li><li><span class="n">3</span><span>Ist es ein <b>Teil</b> davon? Dann ist es der ${mk('PW','PW')}.</span></li></ol>`;
+
+function strf(a){
+  const g=a.vals.find(v=>v[1]==='GW'),w=a.vals.find(v=>v[1]==='PW'),s=a.vals.find(v=>v[1]==='PS');
+  const lab=v=>v[0].includes('?')?'?':v[0].replace(/^−/,'');
+  const pos=Math.min(Math.max(a.p,22),68);
+  return `<div class="strf" aria-label="Prozentstreifen"><div class="strf-top">${mk('GW',lab(g))} = 100 %</div>
+  <div class="strf-bar"><div class="strf-fill" style="width:${a.p}%"></div></div>
+  <div class="strf-bot"><span style="left:${pos}%">${mk('PW',lab(w))} = ${mk('PS',lab(s))}</span></div></div>
+  <p class="strf-cap">${mk('PS','PS')} von ${mk('GW','GW')} sind ${mk('PW','PW')}.</p>`;
+}
+/* Übungen: hint = Hinweis sichtbar, lite = ohne Zusatzinfos. Reihenfolge = steigende Schwierigkeit. */
+const F=(art,role,hint,lite)=>({type:'find',art,role,hint,lite});
+const Q=(art,hint,lite)=>({type:'seq',art,hint,lite});
+const T=(i,hint)=>({type:'seq',txt:TEXT[i],hint});
+const LEVELS=[
+ {title:'Grundwert (GW)',sub:'Das Ganze erkennen',screens:[
+  {type:'info',text:`<p>Bei Prozenten gibt es immer <b>drei Werte</b>:</p><p>${mk('GW','GW')} Grundwert<br>${mk('PW','PW')} Prozentwert<br>${mk('PS','PS')} Prozentsatz</p><p>Du lernst sie nacheinander. Zuerst den Grundwert.</p>`},
+  {type:'info',art:'dl',text:`<p>Ein Beispiel: Du lädst ein Spiel auf dein Handy.</p><p>So sieht die Anzeige aus:</p>`},
+  {type:'info',art:'dl',show:{0:'GW'},text:`<p>Das Spiel ist insgesamt <b>64 GB</b> groß. Das ist <b>das Ganze</b>.</p><p>Das Ganze heißt ${mk('GW','Grundwert (GW)')}.</p>`},
+  {type:'info',art:'dl',show:{0:'GW'},text:`<p>Merke: Der GW ist immer <b>100 %</b>.</p><p>Tipp: Der GW steht oft nach dem Wort <b>„von“</b>: 16 GB von <b>64 GB</b>.</p>`},
+  {type:'demo',art:'data',role:'GW',steps:[[null,'Gesucht ist das Ganze.'],[null,'Hier steht: 15 GB von 20 GB.'],[1,'Nach „von“ steht das Ganze: 20 GB. Das ist der GW.']]},
+  F('dl','GW',1,1),F('test','GW',1,1),F('cls','GW',0,1),F('save','GW',1,0),F('data','GW',0,0),F('shop','GW',0,0)]},
+ {title:'Prozentwert (PW)',sub:'Den Teil erkennen',screens:[
+  {type:'info',art:'dl',show:{0:'GW'},text:`<p>Du kennst schon den ${mk('GW','GW')}: das Ganze. Hier sind das 64 GB.</p>`},
+  {type:'info',art:'dl',show:{0:'GW',1:'PW'},text:`<p><b>16 GB</b> sind schon geladen. Das ist nur <b>ein Teil</b> vom Ganzen.</p><p>Der Teil heißt ${mk('PW','Prozentwert (PW)')}.</p>`},
+  {type:'info',art:'dl',show:{0:'GW',1:'PW'},text:`<p>So erkennst du den PW:</p><p>Er hat dieselbe Einheit wie der GW, hier <b>GB</b>.<br>Er hat <b>kein %-Zeichen</b>.</p>`},
+  {type:'demo',art:'data',role:'PW',steps:[[null,'Gesucht ist ein Teil vom Ganzen.'],[1,'Das ganze Datenvolumen sind 20 GB. Das ist der GW.'],[0,'Davon sind 15 GB verbraucht. Das ist ein Teil, also der PW.']]},
+  F('dl','PW',1,1),F('test','PW',1,1),F('cls','PW',0,1),F('save','PW',1,0),F('data','PW',0,0),F('shop','PW',0,0)]},
+ {title:'Prozentsatz (PS)',sub:'Die Zahl mit % erkennen',screens:[
+  {type:'info',art:'dl',show:{0:'GW',1:'PW'},text:`<p>Du kennst schon den ${mk('GW','GW')} (das Ganze) und den ${mk('PW','PW')} (ein Teil).</p>`},
+  {type:'info',art:'dl',show:{0:'GW',1:'PW',2:'PS'},text:`<p><b>25 %</b> sagt, <b>wie groß</b> der Teil ist.</p><p>Das heißt ${mk('PS','Prozentsatz (PS)')}.</p>`},
+  {type:'info',art:'dl',show:{2:'PS'},text:`<p>So erkennst du den PS: Er hat <b>immer ein %-Zeichen</b>.</p>`},
+  {type:'demo',art:'test',role:'PS',steps:[[null,'Gesucht ist die Zahl mit dem %-Zeichen.'],[3,'Hier steht 75 %. Das ist der PS.']]},
+  F('dl','PS',1,1),F('data','PS',1,1),F('bat','PS',0,0),F('cls','PS',0,1),F('save','PS',0,0),F('shop','PS',0,0)]},
+ {title:'Alle drei',sub:'GW, PW und PS im selben Beispiel',screens:[
+  {type:'info',art:'dl',show:{0:'GW',1:'PW',2:'PS'},text:`<p>Jetzt kennst du alle drei Werte:</p>`},
+  {type:'info',art:'dl',strf:1,text:`<p>Die drei gehören immer zusammen. Hier: <b>25 % von 64 GB sind 16 GB.</b></p><p>Der Streifen zeigt das. Der ganze Streifen ist der GW.</p>`},
+  {type:'info',text:`<p>Wenn du alle drei suchst, fragst du dich immer in dieser Reihenfolge:</p>${LADDER}`},
+  {type:'demo',art:'test',steps:[[null,'Erste Frage: Steht irgendwo ein %?'],[3,'Ja: 75 %. Das ist der PS.'],[2,'Zweite Frage: Was ist alles? Alle Punkte, also 24. Das ist der GW.'],[1,'Dritte Frage: Was ist ein Teil davon? Lea hat 18 Punkte. Das ist der PW.']],strf:1},
+  Q('dl',1,1),Q('data',1,1),Q('cls',0,1),Q('save',1,0),Q('test',0,0),Q('shop',0,0)]},
+ {title:'Textaufgaben',sub:'Gegeben und gesucht markieren',screens:[
+  {type:'info',text:`<p>In Textaufgaben gibt es keine Anzeige. Die Werte stehen <b>im Text</b>.</p><p>Einer der drei Werte fehlt. Nach ihm wird <b>gefragt</b>.</p>`},
+  {type:'info',text:`<p>Du gehst genauso vor wie vorher:</p>${LADDER}<p style="margin-top:12px">Auch die <b>Frage</b> bekommt eine Farbe. Sie zeigt, welcher Wert gesucht ist.</p>`},
+  {type:'demo',txt:TEXT[1],steps:[[null,'Erste Frage: Steht irgendwo ein %?'],[1,'Ja: 75 %. Das ist der PS.'],[0,'Zweite Frage: Was ist das Ganze? Das ganze Spiel: 48 GB. Das ist der GW.'],[2,'Dritte Frage: Was ist ein Teil davon? Gefragt ist, wie viele GB schon da sind. Das ist ein Teil, also der PW. Er ist gesucht.']],strf:1},
+  T(0,1),T(2,1),T(4,0),T(3,0),T(5,1),T(6,0)]}
+];
+const isEx=s=>s.type==='find'||s.type==='seq';
+
+let done=store.get('done',[]),P=null,helpOpen=false;
+
+function home(){
+  P=null;try{speechSynthesis.cancel()}catch(e){}
+  app.innerHTML=`<h1 class="title">Prozent-Marker</h1>
+  <p class="sub">Grundwert, Prozentwert und Prozentsatz an echten Beispielen erkennen.</p>
+  <ol class="levels">${LEVELS.map((l,i)=>`<li><button class="lv" data-lv="${i}"><span class="lv-n">${i+1}</span><span><strong>${l.title}</strong><small>${l.sub}</small></span><span class="ok">${done.includes(i)?'erledigt':''}</span></button></li>`).join('')}</ol>
+  <div class="legend"><span>${mk('GW','GW')} Grundwert</span><span>${mk('PW','PW')} Prozentwert</span><span>${mk('PS','PS')} Prozentsatz</span></div>`;
+  window.scrollTo(0,0);
+}
+function start(i){P={lv:i,i:0,first:0,total:0};reset();render()}
+function reset(){Object.assign(P,{marked:{},ci:0,tries:0,solved:false,fb:'',wrong:-1,reveal:-1,just:-1,ds:0})}
+function cur(){return LEVELS[P.lv].screens[P.i]}
+function artOf(s){return s.txt?parseText(s.txt):ART[s.art]}
+function target(s){return s.type==='find'?s.role:ORDER[P.ci]}
+function promptOf(s){
+  if(P.solved)return s.type==='seq'?'Alle drei gefunden.':'Gefunden.';
+  const r=target(s);return `Tippe auf den ${R[r].n} (${r}).`;
+}
+const HINT={GW:'Gesucht ist das Ganze: alles zusammen, der volle Preis, die ganze Menge.',
+  PW:'Gesucht ist ein Teil vom Ganzen. Er hat eine Einheit wie GB, € oder Punkte, aber kein %.',
+  PS:'Gesucht ist die Zahl mit dem %-Zeichen.'};
+function renderArt(a,marks,interactive,lite){
+  const h=a.html.replace(/\{(\d+)\}/g,(m,k)=>{k=+k;const v=a.vals[k],r=marks[k];
+    if(!interactive)return r?mk(r,v[0],P.just===k):v[0];
+    const cls=['val'];if(r)cls.push('mk','mk-'+r);if(r&&P.just===k)cls.push('sweep');if(P.wrong===k)cls.push('wrong');if(P.reveal===k)cls.push('reveal');
+    return `<button class="${cls.join(' ')}" data-v="${k}">${v[0]}</button>`});
+  return lite?`<div class="lite">${h}</div>`:h;
+}
+function render(){
+  const L=LEVELS[P.lv];if(P.i>=L.screens.length)return finish();
+  const s=cur(),n=L.screens.length,fx=L.screens.findIndex(isEx),ex=isEx(s);
+  const countTxt=ex?`Übung ${P.i-fx+1} von ${n-fx}`:`Erklärung ${P.i+1} von ${fx}`;
+  let body='',nextLabel='Weiter',showNext=false;
+  if(s.type==='info'){
+    const a=s.art?ART[s.art]:null;
+    body=`<div class="intro">${s.text}</div>`+(a?renderArt(a,s.show||{},false,true):'')+(s.strf?strf(a):'');
+    showNext=true;
+  }else if(s.type==='demo'){
+    const a=artOf(s),marks={};
+    for(let j=0;j<P.ds;j++){const k=s.steps[j][0];if(k!==null)marks[k]=a.vals[k][1]}
+    const lastK=P.ds>0?s.steps[P.ds-1][0]:null;P.just=lastK===null?-1:lastK;
+    body=`<p class="demo-k">Beispiel: Wir lösen es zusammen</p>${s.txt?'':`<p class="ctx">${a.ctx}</p>`}${renderArt(a,marks,false,true)}
+    ${P.ds>0?`<ol class="dsteps">${s.steps.slice(0,P.ds).map((st,j)=>`<li><span class="n">${j+1}</span><span>${st[1]}</span></li>`).join('')}</ol>`:''}
+    ${P.ds>=s.steps.length&&s.strf?strf(a):''}`;
+    showNext=true;nextLabel=P.ds<s.steps.length?(P.ds===0?'Zeig mir, wie es geht':'Nächster Schritt'):'Jetzt selbst probieren';
+  }else{
+    const a=artOf(s),g=s.hint?1:0;
+    const hint=!P.solved&&g>0?`<p class="hintbox">${HINT[target(s)]}${s.txt&&g>0?' Auch die Frage kann es sein.':''}</p>`:'';
+    body=`${a.ctx?`<p class="ctx">${a.ctx}</p>`:''}${renderArt(a,P.marked,true,!!s.lite)}<p class="task-q">${promptOf(s)}</p>${hint}${P.solved&&s.type==='seq'?strf(a):''}`;
+    showNext=P.solved;
+  }
+  app.innerHTML=`<div class="bar"><button class="tbtn" id="home">Übersicht</button><div class="tools">
+    <button class="tbtn" id="help" aria-expanded="${helpOpen}">Hilfe</button>${canSpeak?'<button class="tbtn" id="say">Vorlesen</button>':''}</div></div>
+  <div class="meta"><span class="lvname">${P.lv+1} · ${L.title}</span><span class="count">${countTxt}</span></div>
+  <div class="track"><div style="width:${P.i/n*100}%"></div></div>
+  ${helpOpen?`<div class="help"><p>Die drei Fragen</p>${LADDER}</div>`:''}
+  ${body}<div class="fb" aria-live="polite">${P.fb}</div>${showNext||!ex?`<div class="next">${showNext?`<button class="primary" id="next">${nextLabel}</button>`:''}${!ex?'<button class="ghost" id="skip">Erklärung überspringen</button>':''}</div>`:''}`;
+  P.just=-1;
+  const nb=document.getElementById('next');if(nb&&P.solved)nb.focus();
+}
+function explain(v){
+  const [t,r,why]=v;
+  if(r==='X')return `„${t}“ ist eine Zusatzinfo. Damit rechnest du nicht.`;
+  if(why)return why;
+  if(t.includes('?'))return `Diese Frage sucht den ${R[r].n} (${r}).`;
+  return r==='GW'?`„${t}“ ist das Ganze, also 100 %. Das ist der GW.`:r==='PW'?`„${t}“ ist ein Teil vom Ganzen. Das ist der PW.`:`„${t}“ hat ein %-Zeichen. Das ist der PS.`;
+}
+function tap(k){
+  const s=cur(),a=artOf(s),v=a.vals[k],want=target(s);
+  if(P.marked[k])return;
+  if(v[1]===want){
+    P.marked[k]=want;P.just=k;P.wrong=-1;P.reveal=-1;
+    if(s.type==='find'||P.ci===2){
+      P.solved=true;P.total++;if(P.tries===0)P.first++;
+      P.fb=`<div class="msg good"><p><strong>Richtig.</strong> ${s.type==='find'?explain(v):'So hängen die drei zusammen:'}</p></div>`;
+    }else{P.ci++;P.fb=`<div class="msg good"><p><strong>Richtig.</strong> ${explain(v)}</p></div>`}
+  }else{
+    P.tries++;P.wrong=k;
+    let h=`<p><strong>Nicht ganz.</strong> ${explain(v)}</p><p>${HINT[want]}</p>`;
+    if(P.tries>=2){const rk=a.vals.findIndex((x,i)=>x[1]===want&&!P.marked[i]);P.reveal=rk;h+=`<p>Schau auf die umrandete Stelle.</p>`}
+    P.fb=`<div class="msg bad">${h}</div>`;
+  }
+  render();
+}
+function finish(){
+  if(!done.includes(P.lv)){done.push(P.lv);store.set('done',done)}
+  const nx=P.lv+1<LEVELS.length;
+  app.innerHTML=`<div class="art" style="margin-top:20px"><h2 style="margin-bottom:8px">Level ${P.lv+1} abgeschlossen</h2>
+  <p style="margin:0">${P.first} von ${P.total} Aufgaben hast du beim ersten Versuch gelöst.</p>
+  <div class="next">${nx?`<button class="primary" id="nextLv">Weiter zu Level ${P.lv+2}</button>`:''}<button class="ghost" id="again">Level wiederholen</button><button class="ghost" id="home">Übersicht</button></div></div>`;
+}
+function readText(){
+  const s=cur();
+  if(s.type==='info')return s.text;
+  if(s.type==='demo'){const a=artOf(s);return (a.ctx||'')+' '+s.steps.slice(0,P.ds).map(x=>x[1]).join(' ')}
+  const a=artOf(s);let t=(a.ctx||'')+' ';
+  if(s.txt)t+=s.txt.s.replace(/\[([^\]|]+)\|[A-Z]+\]/g,'$1')+' ';
+  t+=promptOf(s);if(s.hint&&!P.solved)t+=' '+HINT[target(s)];return t;
+}
+app.addEventListener('click',e=>{
+  const t=e.target;
+  const lv=t.closest('[data-lv]');if(lv){start(+lv.dataset.lv);return}
+  if(t.closest('#home')){home();return}
+  if(t.closest('#help')){helpOpen=!helpOpen;render();return}
+  if(t.closest('#say')){speak(readText());return}
+  if(t.closest('#next')){const s=cur();if(s.type==='demo'&&P.ds<s.steps.length){P.ds++;render();return}P.i++;reset();render();window.scrollTo(0,0);return}
+  if(t.closest('#skip')){P.i=LEVELS[P.lv].screens.findIndex(isEx);reset();render();window.scrollTo(0,0);return}
+  if(t.closest('#nextLv')){start(P.lv+1);return}
+  if(t.closest('#again')){start(P.lv);return}
+  const v=t.closest('[data-v]');if(v&&P&&!P.solved)tap(+v.dataset.v);
+});
+home();
+})();
+</script>
+</body>
+</html>
+
+</body></html>
